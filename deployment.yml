@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  namespace: default
+  labels:
+    application: app1
+spec:
+  replicas: 15
+  selector:
+    matchLabels:
+      application: app1
+  template:
+    metadata:
+      name: app1
+      labels:
+        application: app1
+    spec:
+      containers:
+      - name: app1
+        image: sandy3004/uniper:v1
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "250Mi"
+          requests:
+            cpu: "50m"
+            memory: "50Mi"
+            
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+  namespace: default
+ # labels:
+  #  name: app1-service
+   # application: app1
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8085
+    targetPort: 8080
+  selector:
+    application: app1
+    
+---
+
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: app
+  namespace: java-webapp
+spec:
+  minReplicas: 4
+  maxReplicas: 15
+  targetCPUUtilizationPercentage: 15
+  scaleTargetRef:
+    apiVersion:  apps/v1
+    kind: Deployment
+    name: app-deployment
+    
+---
+
