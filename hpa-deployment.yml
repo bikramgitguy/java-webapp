@@ -3,7 +3,7 @@ kind: HorizontalPodAutoscaler
 #Author: Bikram Kumar Pattanaik
 metadata:
   name: app
-  namespace: java-webapp
+  namespace: default
 spec:
   minReplicas: 4
   maxReplicas: 15
