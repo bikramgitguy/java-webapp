@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: app1
-        image: sandy3004/uniper:v1
+        image: bikram565/java-webapp:v1
         ports:
         - containerPort: 8080
         resources:
